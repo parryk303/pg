@@ -2,6 +2,11 @@ const express = require('express');
 const app = express();
 const pool = require('./db')
 
+app.use(cors({
+    origin: '*',
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+}));
+
 app.use(express.json()) // req.body
 
 // CREATE
