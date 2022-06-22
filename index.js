@@ -12,7 +12,7 @@ app.use(express.json()) // req.body
 
 //CYBERFUSION HTTP
 
-// CREATE
+// ======================================================== CREATE ========================================================
 app.post('/ssaqs', async (req, res) => {
     try {
         const { ssaqs } = req.body;
@@ -25,7 +25,6 @@ app.post('/ssaqs', async (req, res) => {
     }
 })
 
-// CREATE
 app.post('/tube', async (req, res) => {
     try {
         const { tube } = req.body;
@@ -38,7 +37,6 @@ app.post('/tube', async (req, res) => {
     }
 })
 
-// CREATE
 app.post('/a_a', async (req, res) => {
     try {
         const { approved_awaiting } = req.body;
@@ -51,7 +49,6 @@ app.post('/a_a', async (req, res) => {
     }
 })
 
-// CREATE
 app.post('/ratings', async (req, res) => {
     try {
         const { ratings } = req.body;
@@ -64,7 +61,22 @@ app.post('/ratings', async (req, res) => {
     }
 })
 
-// READ all
+// USER TRACKER
+
+app.post('/ssa', async (req, res) => {
+    try {
+        const { ssa } = req.body;
+        const newData = await pool.query(
+            'INSERT INTO ssa (user_id, avatar, email, name, created, lastsignin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [ssa.user, ssa.avatar, ssa.email, ssa.name, ssa.created, ssa.last ])
+        res.json(newData.rows[0]);
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+// ======================================================== READ ========================================================
+
 app.get('/cyberfusion', async (req, res) => {
     try {
         const allcyberfusion = await pool.query('SELECT * FROM cyberfusion')
@@ -74,7 +86,6 @@ app.get('/cyberfusion', async (req, res) => {
     }
 })
 
-// READ ssaqs
 app.get('/ssaqs', async (req, res) => {
     try {
         const ssaqsD = await pool.query('SELECT * FROM ssaqs')
@@ -84,7 +95,6 @@ app.get('/ssaqs', async (req, res) => {
     }
 })
 
-// READ tube
 app.get('/tube', async (req, res) => {
     try {
         const tubeD = await pool.query('SELECT * FROM tube')
@@ -94,7 +104,6 @@ app.get('/tube', async (req, res) => {
     }
 })
 
-// READ approved_awaiting
 app.get('/a_a', async (req, res) => {
     try {
         const approved_awaitingD = await pool.query('SELECT * FROM approved_awaiting')
@@ -104,7 +113,6 @@ app.get('/a_a', async (req, res) => {
     }
 })
 
-// READ ratings
 app.get('/ratings', async (req, res) => {
     try {
         const ratingsD = await pool.query('SELECT * FROM ratings')
@@ -114,7 +122,28 @@ app.get('/ratings', async (req, res) => {
     }
 })
 
-// UPDATE ssaqs
+app.get('/ssa/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const ssaD = await pool.query('SELECT * FROM ssa WHERE user_id = $1', [id])
+        ssaD.rows.length === 0 ? res.json('User does not exist') :
+        res.json(ssaD.rows);
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+app.get('/ssa', async (req, res) => {
+    try {
+        const ssaD = await pool.query('SELECT * FROM ssa')
+        res.json(ssaD.rows);
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+// ======================================================== UPDATE ========================================================
+
 app.put('/ssaqs', async (req, res) => {
     try {
         const { ssaqs } = req.body;
@@ -125,7 +154,6 @@ app.put('/ssaqs', async (req, res) => {
     }
 })
 
-// UPDATE tube
 app.put('/tube', async (req, res) => {
     try {
         const { tube } = req.body;
@@ -136,7 +164,6 @@ app.put('/tube', async (req, res) => {
     }
 })
 
-// UPDATE ratings
 app.put('/ratings', async (req, res) => {
     try {
         const { ratings } = req.body;
@@ -147,7 +174,6 @@ app.put('/ratings', async (req, res) => {
     }
 })
 
-// UPDATE approved_awaiting
 app.put('/a_a', async (req, res) => {
     try {
         const { approved_awaiting } = req.body;

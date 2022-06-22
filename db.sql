@@ -1,13 +1,6 @@
 CREATE DATABASE cyberfusion_db;
 -- \c into cyberfusion_db
 
-CREATE TABLE users(
-    email
-    created
-    lastSignIn 
-    user_id SERIAL PRIMARY KEY,
-);
-
 CREATE TABLE ssaqs(
     id SERIAL PRIMARY KEY,
     ssaqs jsonb
@@ -30,8 +23,18 @@ CREATE TABLE ratings(
 
 CREATE TABLE fusion_tube(
     id SERIAL PRIMARY KEY,
-    user_id 
-    saved jsonb NOT NULL,
+    saved json NOT NULL
+);
+
+-- USER TRACKER
+
+CREATE TABLE ssa(
+    user_id text PRIMARY KEY,
+    avatar text NOT NULL,
+    email text NOT NULL,
+    name text NOT NULL,
+    created text NOT NULL,
+    lastSignIn text NOT NULL
 );
 
 -- CREATE TABLE table_name (
