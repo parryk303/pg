@@ -75,6 +75,42 @@ app.post('/ssa', async (req, res) => {
     }
 })
 
+app.post('/sr', async (req, res) => {
+    try {
+        const { sr } = req.body;
+        const newData = await pool.query(
+            'INSERT INTO sr (user_id, avatar, email, name, created, lastsignin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [sr.user, sr.avatar, sr.email, sr.name, sr.created, sr.last ])
+        res.json(newData.rows[0]);
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+app.post('/od', async (req, res) => {
+    try {
+        const { od } = req.body;
+        const newData = await pool.query(
+            'INSERT INTO od (user_id, avatar, email, name, created, lastsignin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [od.user, od.avatar, od.email, od.name, od.created, od.last ])
+        res.json(newData.rows[0]);
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+app.post('/ft', async (req, res) => {
+    try {
+        const { ft } = req.body;
+        const newData = await pool.query(
+            'INSERT INTO ft (user_id, avatar, email, name, created, lastsignin) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [ft.user, ft.avatar, ft.email, ft.name, ft.created, ft.last ])
+        res.json(newData.rows[0]);
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
 // ======================================================== READ ========================================================
 
 app.get('/cyberfusion', async (req, res) => {
@@ -137,6 +173,66 @@ app.get('/ssa', async (req, res) => {
     try {
         const ssaD = await pool.query('SELECT * FROM ssa')
         res.json(ssaD.rows);
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+app.get('/sr/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const srD = await pool.query('SELECT * FROM sr WHERE user_id = $1', [id])
+        srD.rows.length === 0 ? res.json('User does not exist') :
+        res.json(srD.rows);
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+app.get('/sr', async (req, res) => {
+    try {
+        const srD = await pool.query('SELECT * FROM sr')
+        res.json(srD.rows);
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+app.get('/od/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const odD = await pool.query('SELECT * FROM od WHERE user_id = $1', [id])
+        odD.rows.length === 0 ? res.json('User does not exist') :
+        res.json(odD.rows);
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+app.get('/od', async (req, res) => {
+    try {
+        const odD = await pool.query('SELECT * FROM od')
+        res.json(odD.rows);
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+app.get('/ft/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const ftD = await pool.query('SELECT * FROM ft WHERE user_id = $1', [id])
+        ftD.rows.length === 0 ? res.json('User does not exist') :
+        res.json(ftD.rows);
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+app.get('/ft', async (req, res) => {
+    try {
+        const ftD = await pool.query('SELECT * FROM ft')
+        res.json(ftD.rows);
     } catch (err) {
         console.error(err.message)
     }
