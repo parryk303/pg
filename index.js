@@ -1,7 +1,29 @@
 const express = require('express');
 const cors = require('cors');
-const app = express();
 const pool = require('./db');
+
+const https = require('https');
+const fs = require('fs');
+const port = 8888;
+
+var key = fs.readFileSync(__dirname + '/certs/selfsigned.key');
+var cert = fs.readFileSync(__dirname + '/certs/selfsigned.crt');
+var options = {
+  key: key,
+  cert: cert
+};
+
+app = express()
+app.get('/', (req, res) => {
+   res.send('Now using https..');
+});
+
+var server = https.createServer(options, app);
+
+server.listen(port, () => {
+  console.log("server starting on port : " + port)
+});
+
 
 app.use(cors({
     origin: '*',
@@ -278,8 +300,4 @@ app.put('/a_a', async (req, res) => {
     } catch (err) {
         console.error(err.message)
     }
-})
-
-app.listen(8888, () => {
-    console.log('server is listenting on port 8888')
 })
