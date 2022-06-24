@@ -6,8 +6,8 @@ const https = require('https');
 const fs = require('fs');
 const port = 8888;
 
-var key = fs.readFileSync(__dirname + '/certs/selfsigned.key');
-var cert = fs.readFileSync(__dirname + '/certs/selfsigned.crt');
+var key = fs.readFileSync(__dirname + '/certs/sr_cyberfusion.securonix.net-key.pem');
+var cert = fs.readFileSync(__dirname + '/certs/sr_cyberfusion.securonix.net.pem');
 var options = {
   key: key,
   cert: cert
