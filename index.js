@@ -10,7 +10,7 @@ app.use(cors({
 
 app.use(express.json()) // req.body
 
-//CYBERFUSION HTTP
+//CYBERFUSION HTTP API
 
 // ======================================================== CREATE ========================================================
 app.post('/ssaqs', async (req, res) => {
